@@ -1,4 +1,7 @@
 package com.example.finalproject.response
 
-class LoginResponse {
+class   LoginResponse {
+    val success :Boolean? = null
+    val token :String? = null
+
 }

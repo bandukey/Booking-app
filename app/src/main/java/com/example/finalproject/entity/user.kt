@@ -1,4 +1,9 @@
 package com.example.finalproject.entity
 
-class user {
+data class user {
+    @PrimaryKey val _id : String? = null,
+    val name : String? = null,
+    val email : String? = null,
+    val phoneNo: String? = null,
+    val password : String? = null
 }

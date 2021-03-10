@@ -1,4 +1,7 @@
 package com.example.finalproject.response
 
-class ImageResponse {
-}
+data class ImageResponse (
+
+    val success : Boolean?=null,
+    val token : String?=null
+)
