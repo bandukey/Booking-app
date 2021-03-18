@@ -1,4 +1,5 @@
 package com.example.finalproject.API
+import com.example.finalproject.entity.user
 import com.example.finalproject.response.LoginResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -10,7 +11,7 @@ interface UserAPI {
 
     @POST("auth/register")
     suspend fun  registerUser(
-        @Body user: User
+        @Body user: user
     ): Response<LoginResponse>
 
     //Login user

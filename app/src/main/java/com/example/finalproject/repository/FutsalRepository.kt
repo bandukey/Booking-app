@@ -1,29 +1,31 @@
 package com.example.finalproject.repository
 
+import com.example.finalproject.API.FutsalAPI
 import com.example.finalproject.API.MyApiRequest
 import com.example.finalproject.API.ServiceBuilder
 import com.example.finalproject.entity.futsal
 import com.example.finalproject.response.AddFutsalResponse
 import com.example.finalproject.response.GetAllFutsalResponse
 import com.example.finalproject.response.ImageResponse
+import okhttp3.MultipartBody
 
 class FutsalRepository:
     MyApiRequest() {
-    private val NewsfeedAPI =
-        ServiceBuilder.buildService(NewsfeedAPI::class.java)
+    private val FutsalAPI =
+        ServiceBuilder.buildService(FutsalAPI::class.java)
 
     //Add student
 
-    suspend fun addfutsal (newsfeed: futsal): AddFutsalResponse{
+    suspend fun addfutsal (futsal: futsal): AddFutsalResponse{
         return apiRequest {
-            NewsfeedAPI.addnews(
-                ServiceBuilder.token!!, newsfeed
+            FutsalAPI.addfutsal(
+                ServiceBuilder.token!!, futsal
             )
         }
     }
-    suspend fun getAllFutsal(): GetAllFutsalResponse {
+    suspend fun getAllfutsal(): GetAllFutsalResponse {
         return apiRequest {
-            NewsfeedAPI.getAllNews(ServiceBuilder.token!!)
+            FutsalAPI.getAllfutsal(ServiceBuilder.token!!)
 
         }
     }
@@ -31,8 +33,8 @@ class FutsalRepository:
     suspend fun uploadImage(id: String, body: MultipartBody.Part)
             : ImageResponse {
         return apiRequest {
-            NewsfeedAPI.uploadImage(ServiceBuilder.token!!, id, body)
+            FutsalAPI.uploadImage(ServiceBuilder.token!!, id, body)
         }
     }
 
-}}
+}
