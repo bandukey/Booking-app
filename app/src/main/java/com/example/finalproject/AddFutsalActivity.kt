@@ -174,7 +174,7 @@ class AddFutsalActivity : AppCompatActivity() {
         val price = etprice.text.toString()
 
 
-        val futsal = futsal (name = name,duration= duration, location = location,price = price)
+        val futsal = futsal (futsalname = name,duration= duration, phoneno = location,price = price)
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val newsfeedRepository = FutsalRepository()

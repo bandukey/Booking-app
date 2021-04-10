@@ -18,30 +18,33 @@ class FutsalAdapter(
 ) : RecyclerView.Adapter<FutsalAdapter.NewsfeedViewHolder>() {
 
     class NewsfeedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imgnewsfeed: ImageView = view.findViewById(R.id.newsfeed_image)
-        val tv_caption: TextView = view.findViewById(R.id.newsfeed_caption)
-        val tv_blogname: TextView = view.findViewById(R.id.blog_title)
+        val imageView3: ImageView = view.findViewById(R.id.imageView3)
+        val tvName: TextView = view.findViewById(R.id.tvName)
+        val tvAddress: TextView = view.findViewById(R.id.tvAddress)
+        val tvprice: TextView = view.findViewById(R.id.tvprice)
+        val tvPhone: TextView = view.findViewById(R.id.tvPhone)
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsfeedViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.newsfeedcustomitem, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.futsallayout, parent, false)
         return NewsfeedViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: NewsfeedViewHolder, position: Int) {
         val newsfeed = lstnewsfeed[position]
-        holder.tv_blogname.text = newsfeed.title
-        holder.tv_caption.text = newsfeed.caption
+        holder.tvName.text = newsfeed.futsalname
+        holder.tvAddress.text = newsfeed.address
+        holder.tvPhone.text = newsfeed.phoneno
 
 
-        val imagePath = ServiceBuilder.loadImagePath() + newsfeed.photo
-        if (!newsfeed.photo.equals("no-photo.jpg")) {
-            Glide.with(context)
-                .load(imagePath)
-                .fitCenter()
-                .into(holder.imgnewsfeed)
-        }
+//        val imagePath = ServiceBuilder.loadImagePath() + newsfeed.address
+//        if (!newsfeed.address.equals("no-photo.jpg")) {
+//            Glide.with(context)
+//                .load(imagePath)
+//                .fitCenter()
+//                .into(holder.imgnewsfeed)
+//        }
 
     }
 
@@ -49,7 +52,4 @@ class FutsalAdapter(
         return lstnewsfeed.size
     }
 
-    fun item(){
-
-    }
 }
