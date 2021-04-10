@@ -48,4 +48,8 @@ class FutsalAdapter(
     override fun getItemCount(): Int {
         return lstnewsfeed.size
     }
+
+    fun item(){
+
+    }
 }
