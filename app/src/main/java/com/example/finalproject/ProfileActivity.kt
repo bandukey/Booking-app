@@ -10,9 +10,15 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.*
-import com.example.finalproject.entity.Futsal
-import com.example.finalproject.repository.FutsalRepository
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.example.finalproject.API.ServiceBuilder
+import com.example.finalproject.API.ServiceBuilder.id
+import com.example.finalproject.entity.User
+import com.example.finalproject.repository.UserRepository
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,102 +32,73 @@ import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddFutsalActivity : AppCompatActivity() {
-    private lateinit var etfutsalname: EditText
-    private lateinit var etprice: EditText
-    private lateinit var etlocation: EditText
-//    private lateinit var etduration: TextInputEditText
-    private lateinit var btnaddfut: Button
-    private lateinit var imgfutsal: ImageView
-    private lateinit var etphone: EditText
+class ProfileActivity : AppCompatActivity() {
+
+    private lateinit var username: EditText
+    private lateinit var email: EditText
+    private lateinit var password: EditText
+    private lateinit var phone: EditText
+    private lateinit var btnUpdate: Button
+    private lateinit var imgProfile: CircleImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_futsal)
+        setContentView(R.layout.activity_profile)
 
-        etfutsalname = findViewById(R.id.etfutname)
-        etprice = findViewById(R.id.etprice)
-        etlocation = findViewById(R.id.etlocation)
-//        etduration = findViewById(R.id.etduration)
-        btnaddfut = findViewById(R.id.btnaddfut)
-        imgfutsal = findViewById(R.id.imgFutsal)
-        etphone = findViewById(R.id.etphone)
+        username = findViewById(R.id.username)
+        email = findViewById(R.id.email)
+        password = findViewById(R.id.password)
+        phone = findViewById(R.id.phone)
+        btnUpdate = findViewById(R.id.btnUpdate)
+        imgProfile = findViewById(R.id.imgProfile)
 
-        btnaddfut.setOnClickListener {
-            saveNews()
+        loadAllUserDetails()
+
+        btnUpdate.setOnClickListener {
+//            updateUserData()
+            val username = username.text.toString()
+            val email = email.text.toString()
+            val password = password.text.toString()
+            val phone = phone.text.toString()
+
+            val user =
+                User(username = username, email = email, password = password, phoneNo = phone)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val userRepo = UserRepository()
+                    val response = userRepo.updateUser(id!!,user)
+                    if (response.success == true){
+                        if (imageUrl != null){
+                            uploadImage(response.data!!._id!!)
+                        }
+                        withContext(Dispatchers.Main){
+                            Toast.makeText(this@ProfileActivity,
+                                "Success", Toast.LENGTH_SHORT).show()
+
+
+                        }
+                    }
+                } catch (ex: Exception) {
+//                withContext(Dispatchers.Main) {
+//                    Toast.makeText(activity,
+//                        "Error : ${ex.toString()}", Toast.LENGTH_SHORT).show()
+//                }
+                }
+            }
         }
 
-        imgfutsal.setOnClickListener {
-            loadPopupMenu()
-        }
     }
 
     private var REQUEST_GALLERY_CODE = 0
     private var REQUEST_CAMERA_CODE = 1
     private var imageUrl: String? = null
 
-    private fun loadPopupMenu() {
-        val popupMenu = PopupMenu(this, imgfutsal)
-        popupMenu.menuInflater.inflate(R.menu.gallery_camera, popupMenu.menu)
-        popupMenu.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.menuCamera ->
-                    openCamera()
-                R.id.menuGallery ->
-                    openGallery()
-            }
-            true
-        }
-        popupMenu.show()
-    }
+//    private fun updateUserData() {
+//
+//    }
 
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_GALLERY_CODE)
-    }
-
-    private fun openCamera() {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(cameraIntent, REQUEST_CAMERA_CODE)
-    }
-
-    private fun saveNews() {
-        val name = etfutsalname.text.toString()
-        val location = etlocation.text.toString()
-        val price = etprice.text.toString()
-        val phn = etphone.text.toString()
-
-        val futsal = Futsal (name = name, phoneno = phn,price = price,location = location)
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val newsfeedRepository = FutsalRepository()
-                val response = newsfeedRepository.addfutsal(futsal)
-                if(response.success == true){
-                    if (imageUrl != null){
-                        uploadImage(response.data!!._id!!)
-
-
-                    }
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                                this@AddFutsalActivity,
-                                "Newsfeed has been uploaded", Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            } catch (ex: Exception) {
-//                withContext(Dispatchers.Main) {
-//                    Toast.makeText(
-//                            this@AddFutsalActivity,
-//                            ex.toString(), Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-            }
-        }
-    }
-
-    private fun uploadImage(futsalId: String) {
+    private fun uploadImage(userId: String) {
         if (imageUrl != null) {
             val file = File(imageUrl!!)
             val reqFile =
@@ -130,11 +107,11 @@ class AddFutsalActivity : AppCompatActivity() {
                 MultipartBody.Part.createFormData("file", file.name, reqFile)
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val futsalRepo = FutsalRepository()
-                    val response = futsalRepo.uploadImage(futsalId, body)
+                    val userRepo = UserRepository()
+                    val response = userRepo.userImageUpload(userId, body)
                     if (response.success == true) {
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(this@AddFutsalActivity, "Uploaded", Toast.LENGTH_SHORT)
+                            Toast.makeText(this@ProfileActivity, "Uploaded", Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }
@@ -142,7 +119,7 @@ class AddFutsalActivity : AppCompatActivity() {
 //                    withContext(Dispatchers.Main) {
 //                        Log.d("My Error ", ex.localizedMessage)
 //                        Toast.makeText(
-//                            this@InsertFoodActivity,
+//                            requireActivity(),
 //                            ex.localizedMessage,
 //                            Toast.LENGTH_SHORT
 //                        ).show()
@@ -166,14 +143,14 @@ class AddFutsalActivity : AppCompatActivity() {
                 cursor!!.moveToFirst()
                 val columnIndex = cursor.getColumnIndex(filePathColumn[0])
                 imageUrl = cursor.getString(columnIndex)
-                imgfutsal.setImageBitmap(BitmapFactory.decodeFile(imageUrl))
+                imgProfile.setImageBitmap(BitmapFactory.decodeFile(imageUrl))
                 cursor.close()
             } else if (requestCode == REQUEST_CAMERA_CODE && data != null) {
                 val imageBitmap = data.extras?.get("data") as Bitmap
                 val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
                 val file = bitmapToFile(imageBitmap, "$timeStamp.jpg")
                 imageUrl = file!!.absolutePath
-                imgfutsal.setImageBitmap(BitmapFactory.decodeFile(imageUrl))
+                imgProfile.setImageBitmap(BitmapFactory.decodeFile(imageUrl))
             }
         }
     }
@@ -202,6 +179,34 @@ class AddFutsalActivity : AppCompatActivity() {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
             file // it will return null
+        }
+    }
+
+    private fun loadAllUserDetails() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val userRepo = UserRepository()
+                val response = userRepo.getMe()
+                if (response.success == true){
+                    val imagePath = ServiceBuilder.loadImagePath() + response.data?.photo
+                    withContext(Dispatchers.Main){
+                        Glide.with(this@ProfileActivity)
+                            .load(imagePath)
+                            .fitCenter()
+                            .into(imgProfile)
+
+                        username.setText(response.data?.username)
+                        password.setText(response.data?.password)
+                        email.setText(response.data?.email)
+                        phone.setText(response.data?.phoneNo)
+                    }
+                }
+            } catch (ex: Exception) {
+//                withContext(Dispatchers.Main) {
+//                    Toast.makeText(this@ProfileActivity,
+//                        "Error : ${ex.toString()}", Toast.LENGTH_SHORT).show()
+//                }
+            }
         }
     }
 }

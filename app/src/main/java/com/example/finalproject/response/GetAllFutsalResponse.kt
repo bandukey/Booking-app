@@ -1,9 +1,9 @@
 package com.example.finalproject.response
 
-import com.example.finalproject.entity.futsal
+import com.example.finalproject.entity.Futsal
 
-class GetAllFutsalResponse (
+data class GetAllFutsalResponse (
     val success : Boolean? = null,
     val count : Int? = null,
-    val data : MutableList<futsal>? = null
+    val data : MutableList<Futsal>? = null
 )

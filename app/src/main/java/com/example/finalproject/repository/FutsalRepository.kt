@@ -3,7 +3,7 @@ package com.example.finalproject.repository
 import com.example.finalproject.API.FutsalAPI
 import com.example.finalproject.API.MyApiRequest
 import com.example.finalproject.API.ServiceBuilder
-import com.example.finalproject.entity.futsal
+import com.example.finalproject.entity.Futsal
 import com.example.finalproject.response.AddFutsalResponse
 import com.example.finalproject.response.GetAllFutsalResponse
 import com.example.finalproject.response.ImageResponse
@@ -16,7 +16,7 @@ class FutsalRepository:
 
     //Add student
 
-    suspend fun addfutsal (futsal: futsal): AddFutsalResponse{
+    suspend fun addfutsal (futsal: Futsal): AddFutsalResponse{
         return apiRequest {
             FutsalAPI.addfutsal(
                 ServiceBuilder.token!!, futsal

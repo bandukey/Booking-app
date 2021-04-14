@@ -1,6 +1,6 @@
 package com.example.finalproject.API
 
-import com.example.finalproject.entity.futsal
+import com.example.finalproject.entity.Futsal
 import com.example.finalproject.response.AddFutsalResponse
 import com.example.finalproject.response.GetAllFutsalResponse
 import com.example.finalproject.response.ImageResponse
@@ -9,13 +9,13 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface FutsalAPI {
-    @POST("futsal/")
+    @POST("/add/futsal/")
     suspend fun addfutsal(
         @Header("Authorization") token: String,
-        @Body futsal: futsal
+        @Body futsal: Futsal
     ): Response<AddFutsalResponse>
 
-    @GET("futsal/")
+    @GET("futsal/all")
     suspend fun getAllfutsal(
         @Header("AUthorization") token: String
 

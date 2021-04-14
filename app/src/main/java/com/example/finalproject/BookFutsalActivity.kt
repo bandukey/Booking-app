@@ -3,13 +3,13 @@ package com.example.finalproject
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finalproject.Adapter.FutsalAdapter
-import com.example.finalproject.entity.futsal
+import com.example.finalproject.entity.Futsal
 import com.example.finalproject.repository.FutsalRepository
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 
 class BookFutsalActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var btnaddnews: FloatingActionButton
+    private lateinit var btnaddnews: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView( R.layout.activity_book_futsal)
@@ -41,7 +41,7 @@ class BookFutsalActivity : AppCompatActivity() {
                 if(response.success==true){
                     val lstfutsal = response.data
                     withContext(Dispatchers.Main){
-                        val adapter = FutsalAdapter(lstfutsal  as ArrayList<futsal>, this@BookFutsalActivity)
+                        val adapter = FutsalAdapter(lstfutsal  as ArrayList<Futsal>, this@BookFutsalActivity)
                         recyclerView.layoutManager = LinearLayoutManager(this@BookFutsalActivity)
                         recyclerView.adapter = adapter
                     }

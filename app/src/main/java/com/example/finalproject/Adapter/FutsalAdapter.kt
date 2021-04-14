@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.finalproject.API.ServiceBuilder
 import com.example.finalproject.R
-import com.example.finalproject.entity.futsal
+import com.example.finalproject.entity.Futsal
 
 class FutsalAdapter(
-    private val lstnewsfeed: ArrayList<futsal>,
+    private val lstnewsfeed: ArrayList<Futsal>,
     private val context: Context
 ) : RecyclerView.Adapter<FutsalAdapter.NewsfeedViewHolder>() {
 
@@ -33,18 +33,18 @@ class FutsalAdapter(
 
     override fun onBindViewHolder(holder: NewsfeedViewHolder, position: Int) {
         val newsfeed = lstnewsfeed[position]
-        holder.tvName.text = newsfeed.futsalname
-        holder.tvAddress.text = newsfeed.address
+        holder.tvName.text = newsfeed.name
+        holder.tvAddress.text = newsfeed.location
         holder.tvPhone.text = newsfeed.phoneno
+        holder.tvprice.text = newsfeed.price
 
-
-//        val imagePath = ServiceBuilder.loadImagePath() + newsfeed.address
-//        if (!newsfeed.address.equals("no-photo.jpg")) {
-//            Glide.with(context)
-//                .load(imagePath)
-//                .fitCenter()
-//                .into(holder.imgnewsfeed)
-//        }
+        val imagePath = ServiceBuilder.loadImagePath() + newsfeed.photo
+        if (!newsfeed.photo.equals("no-photo.jpg")) {
+            Glide.with(context)
+                .load(imagePath)
+                .fitCenter()
+                .into(holder.imageView3)
+        }
 
     }
 
