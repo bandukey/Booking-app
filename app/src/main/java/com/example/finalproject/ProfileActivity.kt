@@ -94,9 +94,9 @@ class ProfileActivity : AppCompatActivity() {
     private var REQUEST_CAMERA_CODE = 1
     private var imageUrl: String? = null
 
-//    private fun updateUserData() {
-//
-//    }
+    private fun updateUserData() {
+
+    }
 
     private fun uploadImage(userId: String) {
         if (imageUrl != null) {
