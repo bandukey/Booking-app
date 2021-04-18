@@ -1,9 +1,13 @@
 package com.example.finalproject
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import com.example.finalproject.response.NotificationChannels
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         btnloginpage.setOnClickListener {
             startActivity(Intent(this@MainActivity, SignInActivity::class.java))
+            showHighPriorityNotification()
         }
 
         btnregisterpage.setOnClickListener {
@@ -27,10 +32,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showHighPriorityNotification() {
+        val notificationManager = NotificationManagerCompat.from(this)
 
+        val notificationChannels = NotificationChannels(this)
+        notificationChannels.createNotificationChannels()
 
+        val notification = NotificationCompat.Builder(this, notificationChannels.CHANNEL_1)
 
+            .setContentTitle("High priority notification")
+            .setContentText("This is my notification body")
+            .setColor(Color.BLUE)
+            .build()
 
+        notificationManager.notify(1, notification)
+    }
 
 
 }

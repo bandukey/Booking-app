@@ -47,10 +47,10 @@ class BookFutsalActivity : AppCompatActivity() {
                     }
                 }
             }catch(ex : Exception){
-                withContext(Dispatchers.Main){
-                    Toast.makeText(this@BookFutsalActivity,
-                            "Error : ${ex.toString()}", Toast.LENGTH_SHORT).show()
-                }
+//                withContext(Dispatchers.Main){
+//                    Toast.makeText(this@BookFutsalActivity,
+//                            "Error : ${ex.toString()}", Toast.LENGTH_SHORT).show()
+//                }
             }
         }
     }

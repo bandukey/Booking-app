@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ServiceBuilder {
     private const val BASE_URL =
-        "http://10.0.2.2:3000/"
+        "http://192.168.1.104:3000/"
     var token: String? = null
     var id: String? = null
 

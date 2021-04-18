@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/futsal" />
+        app:srcCompat="@drawable/futsal_logo" />
 
     <TextView
         android:id="@+id/textView"
